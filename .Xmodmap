@@ -1,0 +1,34 @@
+!clear mod1
+!clear mod3
+clear lock
+clear control
+
+! Original Mod1 had Alt_L Alt_L Alt_R Meta_L
+!keycode 64 = Alt_L NoSymbol Alt_L
+!keycode 108 = Alt_R NoSymbol Alt_R
+!keycode 204 = Alt_L NoSymbol Alt_L
+!keycode 205 = Meta_L NoSymbol Meta_L
+
+!add mod1 = Alt_R Meta_L
+
+! Original Mod3 had ISO_Level5_Shift
+! mod3 will be used as i3 mod key
+! ISO_Level5_Shift is really the left alt as below and left alt is some other key
+! This way, left alt will not trigger behavior in other programs i.e. firefox
+
+!add mod3 = ISO_Level5_Shift Alt_L
+
+! This keycode is the true left alt
+! Need to assign it to some random, nonexistent keysym in order for the hit to be recognized
+! Not sure what 204 is
+!keycode 64 = ISO_Level5_Shift NoSymbol ISO_Level5_Shift
+
+!keycode 66 = Caps_Lock NoSymbol Caps_Lock
+!keycode 37 = Control_L NoSymbol Control_L
+!keycode 105 = Control_R NoSymbol Control_R
+
+! See Arch wiki
+! Table corresponds to:
+! Key Shift+Key Mode_switch+Key
+add control = Caps_Lock Control_L Control_R
+keycode 66 = Control_L NoSymbol NoSymbol NoSymbol

@@ -1,0 +1,45 @@
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+
+all plug#begin()
+Plug 'https://github.com/sainnhe/sonokai'
+kPlug 'lervag/vimtex'
+Plug 'itchyny/lightline.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
+call plug#end()
+
+" Important!!
+if has('termguicolors')
+  set termguicolors
+endif
+" The configuration options should be placed before `colorscheme sonokai`.
+let g:sonokai_style = 'maia'
+let g:sonokai_better_performance = 1
+
+colorscheme sonokai
+
+" one hell of a way to start the config
+" for transparency in alacritty
+highlight EndOfBuffer guibg=NONE ctermbg=NONE
+highlight SignColumn guibg=NONE ctermbg=NONE
+highlight VertSplit guibg=NONE ctermbg=NONE
+highlight SpecialKey guibg=NONE ctermbg=NONE
+highlight NonText guibg=NONE ctermbg=NONE
+highlight NonText guibg=NONE ctermbg=NONE
+highlight Folded guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
+highlight Normal guibg=NONE ctermbg=NONE
+highlight NormalFloat guibg=NONE ctermbg=NONE
+highlight NormalNC guibg=NONE ctermbg=NONE
