@@ -46,4 +46,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# custom git dotfile upload with bare repo
 alias config='/usr/bin/git --git-dir=/home/andrew/.dotfiles/ --work-tree=/home/andrew'
+
+# user libs
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/andrew/lib/

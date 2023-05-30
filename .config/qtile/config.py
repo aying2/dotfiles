@@ -12,6 +12,11 @@ def autostart():
     home = os.path.expanduser('~')
     subprocess.Popen([home + '/.config/qtile/autostart.sh'])
 
+#@hook.subscribe.startup
+#def restart():
+#    home = os.path.expanduser('~')
+#    subprocess.Popen([home + '/.config/qtile/restart.sh'])
+
 widget_defaults = dict(
     font="Free Sans",
     fontsize=12,

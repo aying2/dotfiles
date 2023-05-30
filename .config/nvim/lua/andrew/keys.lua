@@ -30,7 +30,4 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "<space>", "<nop>")
 vim.keymap.set("v", "<space>", "<nop>")
 
--- easier command mode
-vim.keymap.set("n", ";", ":")
-vim.keymap.set("v", ";", ":")
 

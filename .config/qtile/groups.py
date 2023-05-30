@@ -15,9 +15,9 @@ terminal_theme = {
 }
 
 groups = [
-    Group("firefox", spawn='firefox', layout='max', label = '1'),
+    Group("web", spawn='firefox', layout='max', label = '1'),
     Group("terminal", **terminal_theme, label='2'),
-    Group("spotify", label = '3'),
+    Group("terminal2", **terminal_theme, label='3'),
     Group("youtube", layout='max', label = '4'),
     Group("mpv", label = '5'),
     Group("mpv", label = '6'),

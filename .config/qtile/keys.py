@@ -45,12 +45,13 @@ keys = [
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key([mod, "control"], "h", lazy.layout.shrink_main(), desc="Grow window to the left"),
+    Key([mod, "control"], "l", lazy.layout.grow_main(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),  
 
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod, "control"], "n", lazy.layout.reset(), desc="Reset all window sizes"),
 
     Key([mod], "t",
         lazy.window.toggle_floating(),
@@ -74,6 +75,8 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "control"], "e", lazy.spawn("systemctl suspend"), desc="Suspend"),
+    Key([mod, "control"], "x", lazy.spawn("systemctl hibernate"), desc="Hibernate"),
     Key([mod], "r", lazy.spawn('dmenu_run'), desc="Spawn a command using a prompt widget"),
 
     # Change the volume if our keyboard has keys

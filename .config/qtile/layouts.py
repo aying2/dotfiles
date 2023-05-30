@@ -19,8 +19,8 @@ layouts = [
         #layout.Stack(num_stacks=2),
         #layout.Bsp(**theme),
         #layout.Matrix(),
-        layout.MonadTall(**theme),
-        layout.MonadWide(**theme),
+        layout.MonadTall(**theme, ratio = 0.50),
+        layout.MonadWide(**theme, ratio = 0.50),
         #layout.RatioTile(),
         #layout.Tile(),
         #layout.TreeTab(),
@@ -32,6 +32,7 @@ web_layouts = [layouts[i] for i in [0, 1]]
 terminal_layouts = [layouts[i] for i in [2, 3]]
 
 floating_layout = layout.Floating(
+    **theme,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -41,6 +42,7 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(title="fortune"),  # for the lizard
     ]
 )
 

@@ -11,6 +11,15 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 # Inspiration
 # https://github.com/IV4NTMR/Qtile-Chainsawman/blob/main/qtile/config.py
+
+def changeBatteryFormat(widget):
+    if widget.format == '{percent:2.0%}':
+        widget.format = '{hour:d}:{min:02d} {watt:.2f} W'
+    else:
+        widget.format = '{percent:2.0%}'
+
+    widget.bar.draw()
+
 bar_widgets = [
     widget.Sep(
         linewidth=0,
@@ -25,7 +34,7 @@ bar_widgets = [
         foreground=colors[0],
         background=colors[4],
         padding=2,
-        mouse_callbacks={'Button1': lazy.spawn("kitty --hold fortune")},
+        mouse_callbacks={'Button1': lazy.spawn("kitty --hold -o background_opacity=1 -T fortune fortune")},
         #mouse_callbacks={'Button1': lazy.group["scratchpad"].dropdown_toggle("dropdown")},
     ),
     widget.TextBox(
@@ -74,11 +83,11 @@ bar_widgets = [
         foreground=colors[1],
         background=colors[0],
     ),
-    widget.Pomodoro(
-        **widget_defaults,
-        foreground=colors[1],
-        background=colors[0],
-    ),
+   # widget.Pomodoro(
+   #     **widget_defaults,
+   #     foreground=colors[1],
+   #     background=colors[0],
+   # ),
     widget.Sep(
         linewidth=0,
         padding=5,
@@ -180,13 +189,15 @@ bar_widgets = [
     ),
     widget.Sep(
         linewidth=0,
-        padding=5,
+        padding=0,
         background=colors[8],
     ),
     widget.Net(
         **widget_defaults,
         #format = '{down} ' + '' + '' + ' {up}',
         format = '{down}',
+        prefix = 'M',
+        update_interval = 5,
         foreground=colors[0],
         background=colors[8],
     ),
@@ -247,6 +258,7 @@ bar_widgets = [
         background=colors[5],
     ),
     widget.Battery(
+        name = 'batteryicon',
         font = 'DroidSansMono NFM',
         fontsize=22,
         #fmt = "BAT: {}",
@@ -268,6 +280,7 @@ bar_widgets = [
         **widget_defaults,
         #fmt = "BAT: {}",
         format = '{percent:2.0%}',
+        mouse_callbacks={'Button1': lazy.widget["battery"].function(changeBatteryFormat)},
         update_interval=0,
         foreground=colors[0],
         background=colors[5],

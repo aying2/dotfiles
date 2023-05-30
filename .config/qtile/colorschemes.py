@@ -112,12 +112,12 @@ opensuse_dirty = [
     "#033434", # background
     base[1], # foreground
     base[2], # black
-    "#7c6532", # kurisu orange head 50
-    "#63a23f", # opensuse logo
-    "#4e5b34", # kurisu yellow middle 50
+    "#c37d30", # kurisu orange head 50
+    "#689b3b", # opensuse logo
+    "#a5a33e", # kurisu yellow middle 50
     "#0c4e44", # leap symbol; dark cyan
-    "#073d39", # darker cyan
-    "#194e37", # less lime than logo; large circles
+    "#329d6b", # darker cyan
+    "#329d6b", # less lime than logo; large circles
     "#404d33", # transparent orange
     "#1c5037", # kurisu green feet 50
 ]
@@ -137,15 +137,15 @@ opensuse_pure = [
 ]
 
 sonokai_opensuse = [
-    "#033434", # background
+    '#212529', # background; black from website
     base[1], # foreground
     base[2], # black
-    opensuse_pure[3], # orange pure
-    opensuse_pure[4], # green 
-    opensuse_pure[5], # yellow
+    opensuse_dirty[3], # orange pure
+    opensuse_dirty[4], # green 
+    opensuse_dirty[5], # yellow
     opensuse_dirty[6], # blue
     base[7], # magenta
-    opensuse_pure[8], # dark cyan pure (same as for leap logo here)
+    opensuse_dirty[8], # dark cyan pure (same as for leap logo here)
     base[9], # white
     base[10], # bright black 
 ]

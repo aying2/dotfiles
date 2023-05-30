@@ -21,3 +21,5 @@ vim.cmd([[
     augroup END
 ]])
 
+vim.cmd([[highlight LspSignatureActiveParameter gui=bold guibg=#595F6F]])
+vim.cmd([[highlight MatchParen gui=bold guibg=#595F6F]])
