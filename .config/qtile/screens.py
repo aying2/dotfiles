@@ -146,14 +146,18 @@ bar_widgets = [
         background=colors[0],
         padding=0,
     ),
-    widget.Memory(
+    widget.Systray(
         **widget_defaults,
-        fmt = "{}",
-        format = '{MemUsed: .1f} GB',
-        measure_mem = 'G',
-        foreground=colors[1],
-        background=colors[0],
+
     ),
+    #widget.Memory(
+    #    **widget_defaults,
+    #    fmt = "{}",
+    #    format = '{MemUsed: .1f} GB',
+    #    measure_mem = 'G',
+    #    foreground=colors[1],
+    #    background=colors[0],
+    #),
     widget.Sep(
         linewidth=0,
         padding=5,
@@ -265,7 +269,8 @@ bar_widgets = [
         charge_char = '',
         discharge_char = '',
         empty_char = '',
-        full_char = '',
+        #full_char = '',
+        full_char = '=',
         format = '{char}',
         update_interval=0,
         foreground=colors[0],

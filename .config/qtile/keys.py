@@ -77,7 +77,7 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod, "control"], "e", lazy.spawn("systemctl suspend"), desc="Suspend"),
     Key([mod, "control"], "x", lazy.spawn("systemctl hibernate"), desc="Hibernate"),
-    Key([mod], "r", lazy.spawn('dmenu_run'), desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn('rofi -show drun'), desc="Spawn a command using a prompt widget"),
 
     # Change the volume if our keyboard has keys
     Key([], "XF86AudioRaiseVolume", 
