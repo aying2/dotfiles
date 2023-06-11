@@ -169,34 +169,27 @@ mygeeko = wibox.widget.imagebox(beautiful.opensuse_icon)
 
 geeko_t = awful.tooltip({ objects = { mygeeko },})
 
-local geeko_timer = gears.timer({
-    timeout = 0.02
-})
-
+local geeko_timer = gears.timer {
+    timeout = 1.02
+}
+local geeko_msg = {
+    count = 0,
+    msg = ""
+}
 mygeeko:connect_signal('button::press', function()
+    naughty.notify({text = geeko_msg.msg})
+end)
+mygeeko:connect_signal('button::press', function()
+    if not geeko_t.visible then
+        geeko_t.visible = true
+    end
     awful.spawn.easy_async_with_shell("fortune", function(stdout)
-        local count = 0
-        geeko_timer:connect_signal("timeout", function()
-            naughty.notify({text = string.format("%d",1)})
-            -- since first callback is not immediate and has empty box
-            if count == 0 then
-                geeko_t.visible = true
-            -- subtract 1 because there is a newline at the end
-            elseif count == stdout:len() - 1 then
-                geeko_timer:stop()
-            end
-            geeko_t:set_text(stdout:sub(1, count + 1))
-            count = count + 1
-        end)
-        geeko_timer:again()
+        geeko_t:set_text(stdout)
     end)
 end)
 
 mygeeko:connect_signal('mouse::enter', function()
     geeko_t.visible = false
-end)
-mygeeko:connect_signal('mouse::leave', function()
-    geeko_timer:stop()
 end)
 
 -- Menubar configuration
