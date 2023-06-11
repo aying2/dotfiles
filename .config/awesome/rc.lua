@@ -169,23 +169,51 @@ mygeeko = wibox.widget.imagebox(beautiful.opensuse_icon)
 
 geeko_t = awful.tooltip({ objects = { mygeeko },})
 
+-- the weird way callbacks works requires a lot of shared state
 local geeko_timer = gears.timer {
-    timeout = 1.02
+    timeout = 0.02
 }
 local geeko_msg = {
     count = 0,
-    msg = ""
+    to_write = "",
+    writing = false,
 }
-mygeeko:connect_signal('button::press', function()
-    naughty.notify({text = geeko_msg.msg})
-end)
-mygeeko:connect_signal('button::press', function()
-    if not geeko_t.visible then
+
+local function write_incrementally()
+    -- since first timeout callback is not immediate; o/w empty box
+    if not geeko_msg.visible then
         geeko_t.visible = true
     end
-    awful.spawn.easy_async_with_shell("fortune", function(stdout)
-        geeko_t:set_text(stdout)
-    end)
+
+    -- subtract 1 to remove extra new line
+    if geeko_msg.count < geeko_msg.to_write:len() - 1 then
+        geeko_t:set_text(geeko_msg.to_write:sub(1, geeko_msg.count + 1))
+        geeko_msg.count = geeko_msg.count + 1
+    else
+        geeko_msg.writing = false
+        geeko_timer:stop()
+    end
+end
+
+mygeeko:connect_signal('button::press', function()
+    -- early completion
+    if geeko_msg.writing then
+        geeko_timer:stop()
+        -- disconnect previous signal otherwise it will race with
+        -- the next signal
+        geeko_timer:disconnect_signal("timeout", write_incrementally)
+        geeko_t:set_text(geeko_msg.to_write:sub(1, geeko_msg.to_write:len() - 1))
+        geeko_msg.writing = false
+    else
+        awful.spawn.easy_async_with_shell("fortune", function(stdout)
+            geeko_msg.count = 0
+            geeko_msg.writing = true
+            geeko_msg.to_write = stdout
+
+            geeko_timer:connect_signal("timeout", write_incrementally)
+            geeko_timer:start()
+        end)
+    end
 end)
 
 mygeeko:connect_signal('mouse::enter', function()
