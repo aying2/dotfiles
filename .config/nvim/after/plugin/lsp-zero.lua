@@ -55,7 +55,8 @@ local MIN_LABEL_WIDTH = 50
 local cmp_config = lsp.defaults.cmp_config({
     mapping = lsp.defaults.cmp_mappings({
         -- don't complete using <Enter>
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        --['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<CR>'] = vim.NIL,
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ["<Tab>"] = cmp.mapping(function(fallback)

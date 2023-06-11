@@ -116,7 +116,7 @@ opensuse_dirty = [
     "#689b3b", # opensuse logo
     "#a5a33e", # kurisu yellow middle 50
     "#0c4e44", # leap symbol; dark cyan
-    "#329d6b", # darker cyan
+    "#329d6b", # lighter cyan
     "#329d6b", # less lime than logo; large circles
     "#404d33", # transparent orange
     "#1c5037", # kurisu green feet 50
