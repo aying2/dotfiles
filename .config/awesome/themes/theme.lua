@@ -1,23 +1,29 @@
 theme = {}
 
-theme.font_no_size          = "SauceCodePro NFM"
+theme.font_no_size          = "SauceCodePro NFM Semibold"
 theme.font          = theme.font_no_size .. " 12"
+theme.font_icon          = theme.font_no_size .. " 36"
+theme.font_sep          = theme.font_no_size .. " 24"
+theme.font_space          = theme.font_no_size .. " 12"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#62a541"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
-theme.bg_systray    = theme.bg_normal
+local bg_alpha = "55"
+theme.bg_normal     = "#222222" .. bg_alpha
+theme.bg_focus      = "#62a541" .. bg_alpha
+theme.bg_urgent     = "#ff0000" .. bg_alpha
+theme.bg_minimize   = "#444444" .. bg_alpha
+theme.bg_systray    = theme.bg_normal .. bg_alpha
 
-theme.fg_normal     = "#e2e2e3"
-theme.fg_focus      = "#e2e2e3"
-theme.fg_urgent     = "#e2e2e3"
-theme.fg_minimize   = "#e2e2e3"
+local fg_alpha = "DD"
+
+theme.fg_normal     = "#e2e2e3" .. fg_alpha
+theme.fg_focus      = "#e2e2e3" .. fg_alpha
+theme.fg_urgent     = "#e2e2e3" .. fg_alpha
+theme.fg_minimize   = "#e2e2e3" .. fg_alpha
 
 theme.border_width  = 1
-theme.border_normal = "#605d68" -- the next shade from mycolor.space
-theme.border_focus  = "#e2e2e3"
-theme.border_marked = "#91231c"
+theme.border_normal = "#605d68" .. fg_alpha -- the next shade from mycolor.space
+theme.border_focus  = "#e2e2e3" .. fg_alpha
+theme.border_marked = "#91231c" .. fg_alpha
 theme.useless_gap = 15.0/2
 
 -- There are other variable sets

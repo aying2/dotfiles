@@ -11,6 +11,8 @@ vim.cmd([[
 
 vim.g.sonokai_style = 'shusia'
 vim.g.sonokai_better_performance = 1
+vim.g.sonokai_transparent_background = 2
+vim.g.sonokai_colors_override = {bg0 = {'#222222', '235'}}
 vim.cmd([[colorscheme sonokai]])
 
 -- Highlight the region on yank

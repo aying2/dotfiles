@@ -93,7 +93,6 @@ keys = [
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 ]
-
 group_keys = "asdfguiop1234567890"
 
 for i, group in enumerate(groups):

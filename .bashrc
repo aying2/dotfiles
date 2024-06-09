@@ -12,7 +12,7 @@
 
 # Some applications read the EDITOR variable to determine your favourite text
 # editor. So uncomment the line below and enter the editor of your choice :-)
-#export EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/nvim
 #export EDITOR=/usr/bin/mcedit
 
 # For some news readers it makes sense to specify the NEWSSERVER variable here
@@ -30,7 +30,11 @@ alias ls="lsd"
 alias lt="lsd --tree"
 export PATH="$PATH:~/.emacs.d/bin"
 export PATH="$PATH:~/.local/bin"
+
+
+# change prompt to ~ >
 export PS1="\w > "
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/andrew/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -51,3 +55,9 @@ alias config='/usr/bin/git --git-dir=/home/andrew/.dotfiles/ --work-tree=/home/a
 
 # user libs
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/andrew/lib/
+
+# ranger config
+RANGER_LOAD_DEFAULT_RC=false
+
+# for recursive **
+shopt -s globstar

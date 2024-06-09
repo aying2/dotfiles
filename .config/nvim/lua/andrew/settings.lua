@@ -49,3 +49,8 @@ o.mouse = "a"
 g.mapleader = " "
 g.maplocalleader = " "
 
+vim.filetype.add({
+    extension = {
+        qml = "qmljs"
+    }
+})
