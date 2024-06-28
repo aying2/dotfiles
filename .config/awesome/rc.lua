@@ -426,11 +426,24 @@ function mybrightness.set(percent)
 end
 
 -- initialize brightness
-awful.spawn.easy_async_with_shell("brightnessctl m", function(max)
-    awful.spawn.easy_async_with_shell("brightnessctl g", function(cur)
-        naughty.notify { text = "brightness " .. cur .. " " .. max }
-        mybrightness.set(cur / max)
-    end)
+awesome.connect_signal("startup", function(c)
+    -- this should work on the first try (call_now), but just in case use timer
+    gears.timer {
+        timeout = 1,
+        autostart = true,
+        call_now = true,
+        callback = function(self)
+            awful.spawn.easy_async_with_shell("brightnessctl m", function(max)
+                awful.spawn.easy_async_with_shell("brightnessctl g", function(cur)
+                    naughty.notify { text = "brightness " .. cur .. " / " .. max }
+                    if cur ~= "" and max ~= "" then
+                        mybrightness.set(cur / max)
+                        self:stop()
+                    end
+                end)
+            end)
+        end
+    }
 end)
 
 myvolume = wibox.widget {
@@ -470,26 +483,47 @@ end
 
 -- initialize volume
 awesome.connect_signal("startup", function(c)
-    gears.timer.start_new(
-        1,
-        function(self)
-            awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -n 1",
+    -- getting values from pactl is fairly inconsistent for some reason
+    -- so poll until initialized
+    -- this always runs at least twice because the self:stop() doesn't work
+    -- on the initial call_now iteration, presumably because the timer hasn't
+    -- started yet
+    gears.timer {
+        timeout = 1,
+        autostart = true,
+        call_now = true,
+        callback = function(self)
+            awful.spawn.easy_async_with_shell(
+                "pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -n 1",
                 function(stdout)
                     naughty.notify({ text = "vol " .. stdout })
-                    myvolume.set(tonumber(stdout))
-                end)
-            self:stop()
+                    if stdout ~= "" then
+                        myvolume.set(tonumber(stdout))
+                        self:stop()
+                    end
+                end
+            )
         end
-    )
+    }
+
+    gears.timer {
+        timeout = 1,
+        autostart = true,
+        call_now = true,
+        callback = function(self)
+            awful.spawn.easy_async_with_shell("pactl get-sink-mute @DEFAULT_SINK@ | grep -oP '(?<=Mute: )\\w+'",
+                function(stdout)
+                    naughty.notify({ text = "mute " .. stdout })
+                    if stdout ~= "" then
+                        myvolume.set_mute(stdout == "yes")
+                        self:stop()
+                    end
+                end
+            )
+        end
+    }
 end)
 
-awesome.connect_signal("startup", function(c)
-    awful.spawn.easy_async_with_shell("pactl get-sink-mute @DEFAULT_SINK@ | grep -oP '(?<=Mute: )\\w+'",
-        function(stdout)
-            naughty.notify({ text = "mute " .. stdout })
-            myvolume.set_mute(stdout == "yes")
-        end)
-end)
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
     awful.button({}, 1, function(t) t:view_only() end),
