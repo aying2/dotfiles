@@ -38,10 +38,10 @@ require('lspconfig').qmlls.setup({
 })
 
 
-require('lspconfig').clangd.setup({
-    cmd = { "clangd", "--completion-style=detailed" },
-    on_attach = on_attach,
-})
+-- require('lspconfig').clangd.setup({
+--     cmd = { "clangd", "--completion-style=detailed" },
+--     on_attach = on_attach,
+-- })
 
 
 local luasnip = require("luasnip")
@@ -49,8 +49,20 @@ local cmp = require("cmp")
 local cmp_enabled = cmp.get_config().enabled
 
 local ELLIPSIS_CHAR = '…'
+local MAX_NAME_WIDTH = 20
+local MIN_NAME_WIDTH = 20
 local MAX_LABEL_WIDTH = 50
 local MIN_LABEL_WIDTH = 50
+
+-- this is for cleaning up rust completions
+local function trim_use(str)
+    local pos = string.find(str, "%(use")
+
+    if pos ~= nil then
+        return string.sub(str, 1, pos - 1 - 1) .. "~"
+    end
+    return str
+end
 
 local cmp_config = lsp.defaults.cmp_config({
     mapping = lsp.defaults.cmp_mappings({
@@ -91,54 +103,38 @@ local cmp_config = lsp.defaults.cmp_config({
     formatting = {
         -- fields: kind, abbr, menu
         format = function(entry, vim_item)
-            local label = vim_item.abbr
-            local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
+            local label = trim_use(vim_item.abbr)
+            --local label = vim_item.abbr
+            local truncated_label = vim.fn.strcharpart(label, 0, MAX_NAME_WIDTH)
             if truncated_label ~= label then
                 vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
-            elseif string.len(label) < MIN_LABEL_WIDTH then
-                local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(label))
+            elseif string.len(label) < MIN_NAME_WIDTH then
+                local padding = string.rep(' ', MIN_NAME_WIDTH - string.len(label))
                 vim_item.abbr = label .. padding
+            end
+
+            local menu = vim_item.menu
+            local truncated_menu = vim.fn.strcharpart(menu, 0, MAX_LABEL_WIDTH - MAX_NAME_WIDTH)
+            if truncated_menu ~= menu then
+                vim_item.menu = truncated_menu .. ELLIPSIS_CHAR
+            elseif string.len(menu) < MIN_LABEL_WIDTH then
+                local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(menu) - MAX_NAME_WIDTH)
+                vim_item.menu = menu .. padding
             end
             return vim_item
         end,
     },
+
 })
 cmp.setup(cmp_config)
 
-
-local function trim_use(str)
-    local pos = string.find(str, "%(use")
-
-    if pos ~= nil then
-        return string.sub(str, 1, pos - 1 - 1) .. "~"
+-- for cpp, this tag really doesn't work because the parentheses are placed right after the type instead of the name
+cmp_config.sources = cmp.config.sources({ {
+    name = 'nvim_lsp',
+    entry_filter = function(entry, ctx)
+        return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Constructor'
     end
-    return str
-end
-
-MAX_NAME_WIDTH = 20
-MIN_NAME_WIDTH = 20
-cmp_config.formatting = {
-    -- fields: kind, abbr, menu
-    format = function(entry, vim_item)
-        local label = trim_use(vim_item.abbr)
-        --local label = vim_item.abbr
-        local truncated_label = vim.fn.strcharpart(label, 0, MAX_NAME_WIDTH)
-        if truncated_label ~= label then
-            vim_item.abbr = truncated_label .. ELLIPSIS_CHAR
-        elseif string.len(label) < MIN_NAME_WIDTH then
-            local padding = string.rep(' ', MIN_NAME_WIDTH - string.len(label))
-            vim_item.abbr = label .. padding
-        end
-
-        local menu = vim_item.menu
-        local truncated_menu = vim.fn.strcharpart(menu, 0, MAX_LABEL_WIDTH - MAX_NAME_WIDTH)
-        if truncated_menu ~= menu then
-            vim_item.menu = truncated_menu .. ELLIPSIS_CHAR
-        elseif string.len(menu) < MIN_LABEL_WIDTH then
-            local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(menu) - MAX_NAME_WIDTH)
-            vim_item.menu = menu .. padding
-        end
-        return vim_item
-    end,
 }
-cmp.setup.filetype('rust', cmp_config)
+})
+
+cmp.setup.filetype("cpp", cmp_config)

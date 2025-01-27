@@ -243,6 +243,12 @@ left_separator:set_text("")
 right_separator.font = beautiful.font_sep
 left_separator.font = beautiful.font_sep
 
+left_separator = wibox.container.background(left_separator)
+right_separator = wibox.container.background(right_separator)
+
+right_separator.fg = beautiful.fg_accent
+left_separator.fg = beautiful.fg_accent
+
 -- Create a textclock widget (date)
 local date_format_def = "%a %b %-d"
 
@@ -435,7 +441,7 @@ awesome.connect_signal("startup", function(c)
         callback = function(self)
             awful.spawn.easy_async_with_shell("brightnessctl m", function(max)
                 awful.spawn.easy_async_with_shell("brightnessctl g", function(cur)
-                    naughty.notify { text = "brightness " .. cur .. " / " .. max }
+                    -- naughty.notify { text = "brightness " .. cur .. " / " .. max }
                     if cur ~= "" and max ~= "" then
                         mybrightness.set(cur / max)
                         self:stop()
@@ -496,7 +502,7 @@ awesome.connect_signal("startup", function(c)
             awful.spawn.easy_async_with_shell(
                 "pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -n 1",
                 function(stdout)
-                    naughty.notify({ text = "vol " .. stdout })
+                    -- naughty.notify({ text = "vol " .. stdout })
                     if stdout ~= "" then
                         myvolume.set(tonumber(stdout))
                         self:stop()
@@ -513,7 +519,7 @@ awesome.connect_signal("startup", function(c)
         callback = function(self)
             awful.spawn.easy_async_with_shell("pactl get-sink-mute @DEFAULT_SINK@ | grep -oP '(?<=Mute: )\\w+'",
                 function(stdout)
-                    naughty.notify({ text = "mute " .. stdout })
+                    -- naughty.notify({ text = "mute " .. stdout })
                     if stdout ~= "" then
                         myvolume.set_mute(stdout == "yes")
                         self:stop()
@@ -944,6 +950,7 @@ clientbuttons = awful.util.table.join(
 root.keys(globalkeys)
 -- }}}
 
+local max_class = { "firefox", "discord", "RStudio", "QtCreator" }
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -1004,38 +1011,18 @@ awful.rules.rules = {
     -- except maximized programs
     {
         rule = {},
-        except_any = { class = { "firefox", "discord" } },
+        except_any = { class = max_class },
         properties = {
             border_width = beautiful.border_width,
         }
     },
 
     {
-        rule_any = { class = { "firefox", "discord" } },
+        rule_any = { class = max_class },
         properties = {
             maximized = true,
             border_width = 0,
         }
-    },
-    {
-        rule_any = { class = { "kitty" } },
-        callback = function(c)
-            local keys = c:keys()
-            c:keys(gears.table.join(keys,
-                awful.key({ modkey, }, "Return", function()
-                        naughty.notify({ text = "prince" })
-                    end,
-                    { description = "open a terminal", group = "launcher" })))
-            --                    for k, v in pairs(keys) do
-            --                        local str = v.key
-            --                        if str == "Return" then
-            --                            for _, t in pairs(v.modifiers) do
-            --                                str = str.." "..t
-            --                            end
-            --                            naughty.notify({text = str})
-            --                        end
-            --                    end
-        end,
     },
 
     -- qt prevent stealing focus

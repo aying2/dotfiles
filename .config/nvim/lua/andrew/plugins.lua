@@ -58,7 +58,7 @@ return require('packer').startup(function(use)
             { 'hrsh7th/cmp-path' },         -- Optional
             { 'saadparwaiz1/cmp_luasnip' }, -- Optional
             { 'hrsh7th/cmp-nvim-lua' },     -- Optional
-            --{'hrsh7th/cmp-nvim-lsp-signature-help'}, -- Self-added
+            -- { 'hrsh7th/cmp-nvim-lsp-signature-help' }, -- Self-added
             -- Snippets
             { 'L3MON4D3/LuaSnip' },             -- Required
             { 'rafamadriz/friendly-snippets' }, -- Optional
@@ -69,12 +69,18 @@ return require('packer').startup(function(use)
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
     }
-    use { "HiPhish/nvim-ts-rainbow2" }
+    use { "HiPhish/rainbow-delimiters.nvim" }
     use {
         'https://github.com/Shatur/neovim-tasks',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
     use { 'https://github.com/mfussenegger/nvim-dap' }
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
     --use { "ray-x/lsp_signature.nvim"}
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
